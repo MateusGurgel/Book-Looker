@@ -1,4 +1,4 @@
-from scrapping.scrapper import Scrapper
+from scrapping.scrappers.scrapper import Scrapper
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
