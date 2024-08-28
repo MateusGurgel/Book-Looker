@@ -1,10 +1,9 @@
 services:
   redis:
       image: redis:latest
-      ports:
-        - "6379:6379"
 
   app:
+    container_name: book-looker
     build: ./app
     environment:
       - DATABASE_PATH=./database.db
@@ -12,6 +11,7 @@ services:
       - "5123:5123"
 
   worker:
+    container_name: book-looker-worker
     build: ./app
     depends_on:
       - redis
@@ -21,6 +21,7 @@ services:
     command: ["celery", "-A", "celery", "worker", "--loglevel=info"]
 
   beat:
+    container_name: book-looker-beat
     build: ./app
     depends_on:
       - redis
