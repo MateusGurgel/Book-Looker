@@ -3,7 +3,11 @@ from celery import Celery
 from scrapping.task import log_books
 from celery.schedules import crontab
 
-app = Celery('app', broker='redis://localhost:6379/0')
+from decouple import config
+
+BROKER_URL = config("BROKER_URL", cast=str)
+
+app = Celery('app', broker=BROKER_URL)
 
 app.conf.beat_schedule = {
     'add-every-30-seconds': {

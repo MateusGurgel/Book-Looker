@@ -1,8 +1,10 @@
 import sqlite3
 
+from decouple import config
+
 from contextlib import contextmanager
 
-DATABASE_PATH = "database.db"
+DATABASE_PATH = config("DATABASE_PATH", cast=str)
 
 @contextmanager
 def get_db_connection(db_name=DATABASE_PATH):
