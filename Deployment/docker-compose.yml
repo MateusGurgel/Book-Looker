@@ -5,35 +5,27 @@ services:
         - "6379:6379"
 
   app:
-    build:
-      context: ./app/
-      dockerfile: Dockerfile
+    build: ./app
     environment:
       - DATABASE_PATH=./database.db
     ports:
       - "5123:5123"
-    volumes:
-      - .:/app
 
   worker:
-    build:
-      context: ./app/
-      dockerfile: Dockerfile
+    build: ./app
     depends_on:
       - redis
     environment:
       - DATABASE_PATH=./database.db
       - BROKER_URL=redis://redis:6379/0
     command: ["celery", "-A", "celery", "worker", "--loglevel=info"]
-    volumes:
-      - .:/app
-  
+
   beat:
-    build:
-      context: ./app/
-      dockerfile: Dockerfile
+    build: ./app
+    depends_on:
+      - redis
     environment:
       - DATABASE_PATH=./database.db
+      - BROKER_URL=redis://redis:6379/0
     command: ["celery", "-A", "celery", "beat",  "--loglevel=info"]
-    volumes:
-      - .:/app
+
